@@ -107,7 +107,9 @@ void showServerSettingsWithValue(
 
     Widget buildField(
         String label, TextEditingController controller, String errorMsg,
-        {String? Function(String?)? validator, bool autofocus = false}) {
+        {String? Function(String?)? validator,
+        bool autofocus = false,
+        bool obscure = false}) {
       if (isDesktop || isWeb) {
         return Row(
           children: [
@@ -126,6 +128,7 @@ void showServerSettingsWithValue(
                 showLabelText: false,
                 validator: validator,
                 autofocus: autofocus,
+                obscure: obscure,
               ).workaroundFreezeLinuxMint(),
             ),
           ],
@@ -137,6 +140,7 @@ void showServerSettingsWithValue(
         controller: controller,
         errorMsg: errorMsg,
         validator: validator,
+        obscure: obscure,
       ).workaroundFreezeLinuxMint();
     }
 
@@ -154,7 +158,7 @@ void showServerSettingsWithValue(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   buildField(translate('ID Server'), idCtrl, idServerMsg.value,
-                      autofocus: true),
+                      autofocus: true, obscure: true),
                   SizedBox(height: 8),
                   if (!isIOS && !isWeb) ...[
                     buildField(translate('Relay Server'), relayCtrl,
@@ -176,7 +180,7 @@ void showServerSettingsWithValue(
                     },
                   ),
                   SizedBox(height: 8),
-                  buildField('Key', keyCtrl, ''),
+                  buildField('Key', keyCtrl, '', obscure: true),
                   if (isInProgress)
                     Padding(
                       padding: EdgeInsets.only(top: 8),
@@ -214,6 +218,7 @@ TextFormField serverSettingsTextFormField({
   String? Function(String?)? validator,
   bool autofocus = false,
   bool showLabelText = true,
+  bool obscure = false,
   EdgeInsetsGeometry? contentPadding,
 }) {
   return TextFormField(
@@ -225,6 +230,7 @@ TextFormField serverSettingsTextFormField({
     ),
     validator: validator,
     autofocus: autofocus,
+    obscureText: obscure,
     keyboardType: TextInputType.visiblePassword,
     textCapitalization: TextCapitalization.none,
     autocorrect: false,
